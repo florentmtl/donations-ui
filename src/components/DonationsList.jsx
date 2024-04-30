@@ -1,3 +1,32 @@
+import { useState, useEffect, useCallback } from 'react';
+import { DonationsDisplayList } from './DonationsDisplayList.jsx';
+
 export function DonationsList() {
-  return <div className="container">Liste des donations</div>;
+  const [donations, setDonations] = useState([]);
+
+  const fetchDonations = useCallback(() => {
+    fetch('http://localhost:4000/donations', {
+      headers: {
+        Accept: 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data) {
+          setDonations(data);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchDonations();
+  }, []);
+
+  return (
+    <div className="container">
+      <h1>Liste des donations</h1> <DonationsDisplayList donations={donations} />
+    </div>
+  );
 }
