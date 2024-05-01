@@ -26,7 +26,8 @@ export function DonationsList() {
 
   return (
     <div className="container">
-      <h1>Liste des donations</h1> <DonationsDisplayList donations={donations} />
+      <h1>Donations List</h1>
+      <DonationsDisplayList donations={donations} />
     </div>
   );
 }
