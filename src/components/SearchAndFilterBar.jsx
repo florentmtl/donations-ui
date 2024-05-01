@@ -4,7 +4,7 @@ export function SearchAndFilterBar({ sortOrder, setSortOrder, sortProp, setSortP
   };
 
   return (
-    <div className="mb-3 d-flex align-self-center">
+    <div className="d-flex align-self-center">
       <div className="me-3">
         <input
           type="text"
