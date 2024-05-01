@@ -1,21 +1,50 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { SearchAndFilterBar } from './SearchAndFilterBar.jsx';
 import { MultiPageFooter } from './MultiPageFooter.jsx';
 
 export function DonationsDisplayList({ donations }) {
   const [rowsPerPage, setRowsPerPage] = useState(30);
   const [pageNum, setPageNum] = useState(1);
-  const [donationsFiltered, setDonationsFiltered] = useState(donations);
+  const [sortOrder, setSortOrder] = useState('don-asc');
+  const [sortProp, setSortProp] = useState('not-sorted');
+  const [searchValue, setSearchValue] = useState('');
 
-  useEffect(() => {
-    return () => {
-      setDonationsFiltered(donations);
-    };
-  }, [donations]);
+  const sortFunction = useCallback(
+    (a, b) => {
+      if (sortProp === 'date') {
+        return (a.donation.createdAtUtc - b.donation.createdAtUtc) * (sortOrder === 'don-asc' ? 1 : -1);
+      } else if (sortProp === 'amount') {
+        return (a.donation.amount - b.donation.amount) * (sortOrder === 'don-asc' ? 1 : -1);
+      } else if (sortProp === 'contact') {
+        const aFullName = a.donation.firstName.toLowerCase() + ' ' + a.donation.lastName.toLowerCase();
+        const bFullName = b.donation.firstName.toLowerCase() + ' ' + b.donation.lastName.toLowerCase();
+        return aFullName.localeCompare(bFullName) * (sortOrder === 'don-asc' ? 1 : -1);
+      }
+    },
+    [sortOrder, sortProp],
+  );
+
+  const donationsFiltered = useMemo(
+    () =>
+      donations
+        .filter((item) => {
+          const fullName = item.donation.firstName.toLowerCase() + ' ' + item.donation.lastName.toLowerCase();
+          return fullName.includes(searchValue) || !searchValue;
+        })
+        .sort(sortFunction),
+    [donations, searchValue, sortFunction],
+  );
 
   return (
     <div className="mb-3">
-      <SearchAndFilterBar donations={donations} setDonationsFiltered={setDonationsFiltered} />
+      <SearchAndFilterBar
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+        sortProp={sortProp}
+        setSortProp={setSortProp}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
       <table className="table table-bordered">
         <thead>
           <tr>

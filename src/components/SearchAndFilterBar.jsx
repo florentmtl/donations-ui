@@ -1,38 +1,7 @@
-import { useState, useEffect } from 'react';
-
-export function SearchAndFilterBar({ donations, setDonationsFiltered }) {
-  const [sortOrder, setSortOrder] = useState('don-asc');
-  const [sortProp, setSortProp] = useState('not-sorted');
-  const [searchValue, setSearchValue] = useState('');
-
+export function SearchAndFilterBar({ sortOrder, setSortOrder, sortProp, setSortProp, searchValue, setSearchValue }) {
   const handleSortOrderChange = (e) => {
     setSortOrder(e.target.value);
   };
-
-  const sortFunction = (a, b) => {
-    if (sortProp === 'date') {
-      return (a.donation.createdAtUtc - b.donation.createdAtUtc) * (sortOrder === 'don-asc' ? 1 : -1);
-    } else if (sortProp === 'amount') {
-      return (a.donation.amount - b.donation.amount) * (sortOrder === 'don-asc' ? 1 : -1);
-    } else if (sortProp === 'contact') {
-      const aFullName = a.donation.firstName.toLowerCase() + ' ' + a.donation.lastName.toLowerCase();
-      const bFullName = b.donation.firstName.toLowerCase() + ' ' + b.donation.lastName.toLowerCase();
-      return aFullName.localeCompare(bFullName) * (sortOrder === 'don-asc' ? 1 : -1);
-    }
-  };
-
-  useEffect(
-    () =>
-      setDonationsFiltered(
-        donations
-          .filter((item) => {
-            const fullName = item.donation.firstName.toLowerCase() + ' ' + item.donation.lastName.toLowerCase();
-            return fullName.includes(searchValue) || !searchValue;
-          })
-          .sort(sortFunction),
-      ),
-    [searchValue, donations, sortProp, sortOrder],
-  );
 
   return (
     <div className="mb-3 d-flex align-self-center">
@@ -42,6 +11,7 @@ export function SearchAndFilterBar({ donations, setDonationsFiltered }) {
           name="search-bar"
           id="search-donations"
           placeholder="Search contact name..."
+          value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
