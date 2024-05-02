@@ -17,8 +17,8 @@ export function DonationsDisplayList({ donations }) {
       } else if (sortProp === 'amount') {
         return (a.donation.amount - b.donation.amount) * (sortOrder === 'don-asc' ? 1 : -1);
       } else if (sortProp === 'contact') {
-        const aFullName = a.donation.firstName.toLowerCase() + ' ' + a.donation.lastName.toLowerCase();
-        const bFullName = b.donation.firstName.toLowerCase() + ' ' + b.donation.lastName.toLowerCase();
+        const aFullName = a.donation.firstName + ' ' + a.donation.lastName;
+        const bFullName = b.donation.firstName + ' ' + b.donation.lastName;
         return aFullName.localeCompare(bFullName) * (sortOrder === 'don-asc' ? 1 : -1);
       }
     },
@@ -29,8 +29,8 @@ export function DonationsDisplayList({ donations }) {
     () =>
       donations
         .filter((item) => {
-          const fullName = item.donation.firstName.toLowerCase() + ' ' + item.donation.lastName.toLowerCase();
-          return fullName.includes(searchValue) || !searchValue;
+          const fullName = item.donation.firstName + ' ' + item.donation.lastName;
+          return fullName.toLowerCase().includes(searchValue) || !searchValue;
         })
         .sort(sortFunction),
     [donations, searchValue, sortFunction],
@@ -61,7 +61,7 @@ export function DonationsDisplayList({ donations }) {
             <th scope="col">Date</th>
             <th scope="col">Thank you comment</th>
             <th scope="col">Anonymous</th>
-            <th scope="col">Copmany name</th>
+            <th scope="col">Company name</th>
             <th scope="col">Refunded Amount</th>
           </tr>
         </thead>
