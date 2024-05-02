@@ -1,5 +1,5 @@
 export function MultiPageFooter({ rowsPerPage, setRowsPerPage, pageNum, setPageNum, numTotalElements }) {
-  const handleRows = (e) => {
+  const handleRowsChange = (e) => {
     // aggressive solution
     setPageNum(1);
     setRowsPerPage(parseInt(e.target.value));
@@ -11,16 +11,18 @@ export function MultiPageFooter({ rowsPerPage, setRowsPerPage, pageNum, setPageN
         <label className="me-2" htmlFor="select-pprows-donations">
           Rows per page
         </label>
-        <select name="select-pprows" id="select-pprows-donations" value={rowsPerPage} onChange={handleRows}>
+        <select name="select-pprows" id="select-pprows-donations" value={rowsPerPage} onChange={handleRowsChange}>
           <option value="10">10</option>
           <option value="30">30</option>
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
       </div>
+      
       <div className="me-3 d-flex align-self-center">
         {1 + (pageNum - 1) * rowsPerPage}-{Math.min(pageNum * rowsPerPage, numTotalElements)} of {numTotalElements}
       </div>
+
       <div className="d-flex align-self-center">
         <button
           className="btn btn-secondary"
@@ -31,6 +33,7 @@ export function MultiPageFooter({ rowsPerPage, setRowsPerPage, pageNum, setPageN
         >
           {'<<'}
         </button>
+
         <button
           className="btn btn-secondary"
           disabled={pageNum === 1 ? true : false}
@@ -40,6 +43,7 @@ export function MultiPageFooter({ rowsPerPage, setRowsPerPage, pageNum, setPageN
         >
           {'<'}
         </button>
+
         <button
           className="btn btn-secondary"
           disabled={pageNum * rowsPerPage >= numTotalElements ? true : false}
@@ -49,6 +53,7 @@ export function MultiPageFooter({ rowsPerPage, setRowsPerPage, pageNum, setPageN
         >
           {'>'}
         </button>
+
         <button
           className="btn btn-secondary"
           disabled={pageNum * rowsPerPage >= numTotalElements ? true : false}

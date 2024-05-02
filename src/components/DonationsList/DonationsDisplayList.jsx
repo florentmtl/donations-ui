@@ -16,6 +16,7 @@ export function DonationsDisplayList({ donations }) {
       } else if (sortProp === 'amount') {
         return (a.donation.amount - b.donation.amount) * (sortOrder === 'don-asc' ? 1 : -1);
       } else if (sortProp === 'contact') {
+        //issue with sorting names
         const aFullName = a.donation.firstName + ' ' + a.donation.lastName;
         const bFullName = b.donation.firstName + ' ' + b.donation.lastName;
         return aFullName.localeCompare(bFullName) * (sortOrder === 'don-asc' ? 1 : -1);

@@ -5,9 +5,10 @@ import { useState } from 'react';
 import { MoneyInput } from '../forms/MoneyInput.jsx';
 
 export function AddDonation() {
-  const [inputs, setInputs] = useState({ type: 'Manual' });
+  const [inputs, setInputs] = useState({ type: 'Manual', firstName: '', lastName: '' });
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [donationDate, setDonationDate] = useState(new Date());
+  const [enterAmount, setEnterAmount] = useState(false);
 
   const navigate = useNavigate();
 
@@ -19,19 +20,23 @@ export function AddDonation() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const fullInfo = { ...inputs, createdAtUtc: donationDate.getTime(), isAnonymous: isAnonymous };
-    fetch('http://localhost:4000/donations', {
-      method: 'POST',
-      body: JSON.stringify(fullInfo),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then((response) => response.json())
-      .catch((err) => {
-        console.log(err);
-      });
-    navigate('/');
+    if (!inputs.amount) {
+      setEnterAmount(true);
+    } else {
+      const fullInfo = { ...inputs, createdAtUtc: donationDate.getTime(), isAnonymous: isAnonymous };
+      fetch('http://localhost:4000/donations', {
+        method: 'POST',
+        body: JSON.stringify(fullInfo),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .catch((err) => {
+          console.log(err);
+        });
+      navigate('/');
+    }
   };
 
   return (
@@ -63,6 +68,7 @@ export function AddDonation() {
                 name="lastName"
                 id="last-name"
                 placeholder="Last name"
+                value={inputs.lastName || ''}
                 onChange={handleChange}
               />
             </div>
@@ -151,7 +157,10 @@ export function AddDonation() {
               Anonymous donation
             </label>
           </div>
-          <input className="btn btn-primary" type="submit" value="Add donation" />
+          <div className="d-flex">
+            <input className="btn btn-primary" type="submit" value="Add donation" />
+            {enterAmount && <div>Please enter amount</div>}
+          </div>
         </form>
       </div>
     </div>
