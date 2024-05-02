@@ -1,5 +1,5 @@
-import { DonationsList } from './components/DonationsList.jsx';
-import { AddDonation } from './components/AddDonation.jsx';
+import { DonationsList } from './components/DonationsList/DonationsList.jsx';
+import { AddDonation } from './components/AddDonation/AddDonation.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([

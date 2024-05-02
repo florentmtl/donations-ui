@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { SearchAndFilterBar } from './SearchAndFilterBar.jsx';
 import { MultiPageFooter } from './MultiPageFooter.jsx';
 
-
 export function DonationsDisplayList({ donations }) {
   const [rowsPerPage, setRowsPerPage] = useState(30);
   const [pageNum, setPageNum] = useState(1);
