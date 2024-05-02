@@ -23,7 +23,17 @@ export function MultiPageFooter({ rowsPerPage, setRowsPerPage, pageNum, setPageN
       </div>
       <div className="d-flex align-self-center">
         <button
-          className="btn"
+          className="btn btn-secondary"
+          disabled={pageNum === 1 ? true : false}
+          onClick={() => {
+            setPageNum(1);
+          }}
+        >
+          {'<<'}
+        </button>
+        <button
+          className="btn btn-secondary"
+          disabled={pageNum === 1 ? true : false}
           onClick={() => {
             setPageNum(Math.max(1, pageNum - 1));
           }}
@@ -31,12 +41,22 @@ export function MultiPageFooter({ rowsPerPage, setRowsPerPage, pageNum, setPageN
           {'<'}
         </button>
         <button
-          className="btn"
+          className="btn btn-secondary"
+          disabled={pageNum * rowsPerPage >= numTotalElements ? true : false}
           onClick={() => {
             setPageNum(Math.min(Math.ceil(numTotalElements / rowsPerPage), pageNum + 1));
           }}
         >
           {'>'}
+        </button>
+        <button
+          className="btn btn-secondary"
+          disabled={pageNum * rowsPerPage >= numTotalElements ? true : false}
+          onClick={() => {
+            setPageNum(Math.ceil(numTotalElements / rowsPerPage));
+          }}
+        >
+          {'>>'}
         </button>
       </div>
     </div>
