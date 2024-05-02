@@ -1,5 +1,4 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { SearchAndFilterBar } from './SearchAndFilterBar.jsx';
 import { MultiPageFooter } from './MultiPageFooter.jsx';
 
@@ -38,7 +37,7 @@ export function DonationsDisplayList({ donations }) {
 
   return (
     <div className="mb-3">
-      <div className="d-flex justify-content-between mb-3">
+      <div className="mb-3">
         <SearchAndFilterBar
           sortOrder={sortOrder}
           setSortOrder={setSortOrder}
@@ -47,9 +46,6 @@ export function DonationsDisplayList({ donations }) {
           searchValue={searchValue}
           setSearchValue={setSearchValue}
         />
-        <Link to="/add-donation" className="btn btn-primary">
-          + Add donation
-        </Link>
       </div>
 
       <table className="table table-bordered">
