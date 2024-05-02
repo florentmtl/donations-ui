@@ -2,11 +2,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
+import { MoneyInput } from '../forms/MoneyInput.jsx';
 
 export function AddDonation() {
   const [inputs, setInputs] = useState({ type: 'Manual' });
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [donationDate, setDonationDate] = useState(new Date());
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -66,28 +68,20 @@ export function AddDonation() {
             </div>
           </div>
           <div className="row mb-3">
-            <div className="col-md-6">
-              <label htmlFor="amount-form">Amount</label>
-              <div className="input-group">
-                <span className="input-group-text">$</span>
-                <input className="form-control" type="number" id="amount-form" name="amount" onChange={handleChange} />
-                <span className="input-group-text">.00</span>
-              </div>
-            </div>
-            <div className="col-md-6">
-              <label htmlFor="refunded-amount-form">Refunded amount</label>
-              <div className="input-group">
-                <span className="input-group-text">$</span>
-                <input
-                  className="form-control"
-                  type="number"
-                  id="refunded-amount-form"
-                  name="refundedAmount"
-                  onChange={handleChange}
-                />
-                <span className="input-group-text">.00</span>
-              </div>
-            </div>
+            <MoneyInput
+              className="col-md-6"
+              nameText="Amount"
+              name="amount"
+              onChange={handleChange}
+              value={inputs.amount || ''}
+            />
+            <MoneyInput
+              className="col-md-6"
+              nameText="Refunded amount"
+              name="refundedAmount"
+              onChange={handleChange}
+              value={inputs.refundedAmount || ''}
+            />
           </div>
           <div className="mb-3 row">
             <label className="col-sm-3 col-form-label" htmlFor="type-donation">
