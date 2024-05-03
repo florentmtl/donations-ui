@@ -1,13 +1,37 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { SearchAndFilterBar } from './SearchAndFilterBar.jsx';
 import { MultiPageFooter } from './MultiPageFooter.jsx';
 
-export function DonationsDisplayList({ donations }) {
+export function DonationsDisplayList() {
   const [rowsPerPage, setRowsPerPage] = useState(30);
   const [pageNum, setPageNum] = useState(1);
   const [sortOrder, setSortOrder] = useState('don-asc');
   const [sortProp, setSortProp] = useState('not-sorted');
   const [searchValue, setSearchValue] = useState('');
+  const [dataBack, setDataBack] = useState({ donations: [] });
+
+  const fetchDonations = () =>
+    fetch('http://localhost:4000/donations?' + 'rowsPerPage=' + rowsPerPage + '&pageNum=' + pageNum, {
+      headers: {
+        Accept: 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data) {
+          setDataBack(data);
+        }
+      });
+
+  useEffect(() => {
+    fetchDonations();
+  }, [rowsPerPage, pageNum]);
+
+  const donations = dataBack.donations;
+  const isPageMin = dataBack.isPageMin;
+  const isPageMax = dataBack.isPageMax;
 
   const sortFunction = useCallback(
     (a, b) => {
@@ -64,10 +88,10 @@ export function DonationsDisplayList({ donations }) {
         </thead>
         <tbody className="table-group-divider">
           {donationsFiltered
-            .slice(
-              Math.min((pageNum - 1) * rowsPerPage, donationsFiltered.length - 1),
-              Math.min(pageNum * rowsPerPage, donationsFiltered.length),
-            )
+            //.slice(
+            //  Math.min((pageNum - 1) * rowsPerPage, donationsFiltered.length - 1),
+            //  Math.min(pageNum * rowsPerPage, donationsFiltered.length),
+            //)
             .map((donation) => (
               <tr key={donation.id}>
                 <td>${donation.donation.amount}</td>
@@ -90,6 +114,8 @@ export function DonationsDisplayList({ donations }) {
         pageNum={pageNum}
         setPageNum={setPageNum}
         numTotalElements={donationsFiltered.length}
+        isPageMin={isPageMin}
+        isPageMax={isPageMax}
       />
     </div>
   );
